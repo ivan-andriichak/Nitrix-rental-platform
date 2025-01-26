@@ -1,0 +1,94 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for managing apartments",
+    "version": "1.0.7",
+    "title": "Apartment Rental API",
+    "contact": {
+      "email": "test@gmail.com"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/apartments": {
+      "get": {
+        "summary": "Get all apartments",
+        "responses": {
+          "200": {
+            "description": "List of apartments",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Apartment"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new apartment",
+        "parameters": [
+          {
+            "name": "apartment",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Apartment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Apartment created"
+          }
+        }
+      }
+    },
+    "/apartments/{id}": {
+      "delete": {
+        "summary": "Delete an apartment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Apartment deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Apartment": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "rooms": {
+          "type": "number"
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
