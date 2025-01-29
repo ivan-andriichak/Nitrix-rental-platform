@@ -1,0 +1,55 @@
+#version: "3.8"
+#services:
+#  app:
+#    build:
+#      context: .
+##      ports:
+##                - "8888:5000"
+#      dockerfile: backend/Dockerfile
+#    ports:
+#      - "${PORT}:${PORT}"
+#    env_file:
+#      - .env
+#    volumes:
+#      - ./backend:/app
+#      - /app/node_modules
+#    restart: on-failure
+#    command: >
+#      sh -c "node src/app.js"
+#
+#
+#    db:
+#      image: mongo
+#      #    ports:
+#      #       - "5555:27017"
+#      env_file:
+#        - .env
+#      volumes:
+#        - ./mongo_db:/data/db
+#        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+#      restart: on-failure
+#
+#    web:
+#      image: nginx:alpine
+#      ports:
+#        - "80:80"
+#      volumes:
+#        - ./client:/usr/share/nginx/html
+#        - ./nginx.conf:/etc/nginx/conf.d/default.conf
+#      restart: on-failure
+
+
+version: '3'
+services:
+  server:
+    build: ./server
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db

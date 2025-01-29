@@ -1,0 +1,146 @@
+
+.header {
+    position: relative;
+    height: 4rem;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 65rem;
+}
+
+.imdb_logo {
+    height: 2.2rem;
+    cursor: pointer;
+    box-shadow: inset -2px -2px 3px rgba(243, 206, 19),
+    inset 2px 2px 3px rgb(196, 171, 4);
+    border-radius: 0.4rem;
+    margin-top: 8px;
+    background-image: linear-gradient(
+            to top left,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.2) 30%,
+            rgba(0, 0, 0, 0)
+    )
+}
+
+.imdb_logo:active {
+    box-shadow: inset 2px 2px 3px rgb(243, 206, 1),
+    inset -2px -2px 3px rgb(217, 183, 0);
+}
+
+.menu_block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: larger;
+}
+
+.menu_icon {
+    height: 2.2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    border-radius: 0.4rem;
+}
+
+.menu_icon:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.menu {
+    position: absolute;
+    top: calc(100%);
+    left: 0;
+    padding: 10px;
+    z-index: 999;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+    background-color: white;
+    border-radius: 0.2rem;
+
+}
+
+.menu.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.search_block {
+    display: flex;
+    align-items: stretch;
+    height: 2.2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    border-radius: 0.4rem;
+}
+
+.search_input {
+    width: 28rem;
+    border-bottom-left-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 1.1rem;
+}
+
+.clear_button {
+    background: white;
+    padding: 8px 6px 6px 6px;
+    position: relative;
+    cursor: pointer;
+
+}
+
+.clear_button::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: 0;
+    height: 60%;
+    width: 1px;
+    background: grey;
+}
+
+
+.clear_button img {
+    width: 1.3rem;
+}
+
+.search_button {
+    padding: 10px;
+    background: white;
+    border-bottom-right-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    cursor: pointer;
+}
+
+.search_icon {
+    width: 1.1rem;
+    cursor: pointer;
+}
+
+.styled:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.logo_register {
+    margin-left: 120px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+}
+
+.logo_register span {
+    cursor: pointer;
+}
+
+.user_icon {
+    width: 1.8rem;
+    border-radius: 50%;
+}
+
