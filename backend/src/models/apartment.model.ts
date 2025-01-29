@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { IApartment } from '../intrfaces/apartment.interfaces';
+import { IApartment } from '../interfaces/apartment.interfaces';
 
 const apartmentSchema = new mongoose.Schema({
   title: { type: String, required: true, maxlength: 90 },

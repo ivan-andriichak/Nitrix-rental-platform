@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { IApartment } from '../intrfaces/apartment.interfaces';
+import { IApartment } from '../interfaces/apartment.interfaces';
 import { Apartment } from '../models/apartment.model';
 
-// Додати нову квартиру
 // eslint-disable-next-line no-unused-vars
 export const createApartment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { title, description, price, rooms, photos }: IApartment = req.body;
@@ -17,7 +16,6 @@ export const createApartment = async (req: Request, res: Response, next: NextFun
   }
 };
 
-// Отримати всі квартири
 // eslint-disable-next-line no-unused-vars
 export const getApartments = async (req: Request, res: Response, next: NextFunction) => {
   const { priceMin, priceMax, rooms }: { priceMin?: number; priceMax?: number; rooms?: number } = req.query;
@@ -40,7 +38,6 @@ export const getApartments = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-// Отримати одну квартиру за ID
 // eslint-disable-next-line no-unused-vars
 export const getApartment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
@@ -56,7 +53,6 @@ export const getApartment = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-// Оновити квартиру
 // eslint-disable-next-line no-unused-vars
 export const updateApartment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
@@ -73,7 +69,6 @@ export const updateApartment = async (req: Request, res: Response, next: NextFun
   }
 };
 
-// Видалити квартиру
 // eslint-disable-next-line no-unused-vars
 export const deleteApartment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
