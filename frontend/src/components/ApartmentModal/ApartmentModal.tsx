@@ -1,36 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addApartment, AppDispatch, updateApartment } from '../../store';
-import css from './ApartmentModal.module.css';
+import styles from './ApartmentModal.module.css';
+import { Apartment, FormDataState } from '../../interfaces/types';
 
 interface ApartmentModalProps {
-  apartment?: any;
-  onClose: () => void;
-  onSave?: (apartment: any) => Promise<void>;
+  apartment?: Apartment,
+  onClose: () => void,
+  onSave?: (apartment: Apartment) => Promise<void>
 }
 
 const ApartmentModal: React.FC<ApartmentModalProps> = ({ apartment, onClose, onSave }) => {
-  const [formData, setFormData] = useState({
-    title: apartment?.title || '',
-    description: apartment?.description || '',
-    price: apartment?.price || 0,
-    rooms: apartment?.rooms || 0,
-    photos: apartment?.photos || [],
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [formData, setFormData] = useState<FormDataState>({
+    title: '',
+    description: '',
+    price: 0,
+    rooms: 0,
+    photos: [] as File[],
+    photoPreviews: [] as string[],
   });
 
   useEffect(() => {
-    if (apartment) {
-      setFormData({
-        title: apartment.title,
-        description: apartment.description,
-        price: apartment.price,
-        rooms: apartment.rooms,
-        photos: apartment.photos,
-      });
-    }
+    setFormData({
+      title: apartment?.title || '',
+      description: apartment?.description || '',
+      price: apartment?.price || 0,
+      rooms: apartment?.rooms || 0,
+      photos: [],
+      photoPreviews: apartment?.photos || [],
+    });
   }, [apartment]);
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,83 +40,79 @@ const ApartmentModal: React.FC<ApartmentModalProps> = ({ apartment, onClose, onS
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const photoUrls = Array.from(files).map(file => URL.createObjectURL(file));
-      setFormData({ ...formData, photos: photoUrls });
+      const fileArray = Array.from(files);
+      setFormData(prev => ({
+        ...prev,
+        photos: fileArray,
+        photoPreviews: fileArray.map(file => URL.createObjectURL(file)),
+      }));
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (apartment) {
-      dispatch(updateApartment({ ...apartment, ...formData }));
-    } else {
-      dispatch(addApartment(formData));
+    const formDataToSend = new FormData();
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('price', formData.price.toString());
+    formDataToSend.append('rooms', formData.rooms.toString());
+
+    formData.photos.forEach((photo) => {
+      formDataToSend.append('photos', photo);
+    });
+
+    try {
+      if (apartment) {
+        await dispatch(updateApartment({ id: apartment.id, formData: formDataToSend }));
+      } else {
+        await dispatch(addApartment(formDataToSend));
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 2000);
+    } catch (error) {
+      console.error('Error saving apartment:', error);
     }
-    onClose();
   };
+
+
 
   return (
-    <div className={css.modal}>
-      <div className={css.modalContent}>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modal}>
         <h2>{apartment ? 'Edit Apartment' : 'Add Apartment'}</h2>
         <form onSubmit={handleSubmit}>
-          <input
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Title"
-            required
-          />
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Description"
-            required
-          />
-          <input
-            name="price"
-            type="number"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="Price"
-            required
-          />
-          <select
-            name="rooms"
-            value={formData.rooms}
-            onChange={handleChange}
-            required
-          >
-            <option value={1}>1 Room</option>
-            <option value={2}>2 Rooms</option>
-            <option value={3}>3 Rooms</option>
-            <option value={4}>4 Rooms</option>
-            <option value={5}>5 Rooms</option>
+          <input className={styles.input} name="title" value={formData.title} onChange={handleChange}
+                 placeholder="Title" required />
+          <textarea className={styles.input} name="description" value={formData.description} onChange={handleChange}
+                    placeholder="Description" required />
+          <input className={styles.input} name="price" type="number" value={formData.price} onChange={handleChange}
+                 placeholder="Price" required />
+          <select className={styles.input} name="rooms" value={formData.rooms} onChange={handleChange} required>
+            {[1, 2, 3, 4, 5].map(num => <option key={num} value={num}>{num} Room(s)</option>)}
           </select>
-          <div>
-            <label htmlFor="photos">Upload Photos:</label>
-            <input
-              type="file"
-              name="photos"
-              id="photos"
-              multiple
-              onChange={handlePhotoChange}
-            />
-            <div>
-              {formData.photos.map((photo: string | undefined, index: React.Key | null | undefined) => (
-                <img
-                  key={index}
-                  src={photo}
-                  alt={`Photo ${index }`}
-                  style={{ width: 100, height: 100, margin: 5 }}
-                />
-              ))}
-            </div>
+
+          <label htmlFor="photos">Upload Photos:</label>
+          <input type="file" name="photos" id="photos" multiple onChange={handlePhotoChange} />
+
+          <div className={styles.photoPreviewsContainer}>
+            {formData.photoPreviews.map((photo, index) => (
+              <img key={index} src={photo} alt={`Preview: ${index}`} className={styles.photoPreview} />
+            ))}
           </div>
-          <button type="submit">Save</button>
+          <div className={styles.buttonsContainer}>
+            <button type="button" onClick={onClose} className={styles.cancelButton} disabled={success}>Cancel</button>
+            <button type="submit" className={styles.saveButton} disabled={success}>{
+              apartment ? 'Update' : 'Add'
+            }</button>
+          </div>
+          {success && <p>Apartment {apartment ? 'updated' : 'added'} successfully!</p>}
         </form>
-        <button onClick={onClose}>Close</button>
       </div>
     </div>
   );

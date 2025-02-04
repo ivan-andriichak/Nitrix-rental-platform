@@ -1,14 +1,23 @@
 export interface Apartment {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   price: number;
   rooms: number;
+  photos?: string[];
 }
 
-export interface FormData {
+export interface ApartmentState {
+  apartments: Apartment[];
+  loading: boolean;
+  error: string | null;
+}
+
+ export interface FormDataState {
   title: string;
   description: string;
   price: number;
   rooms: number;
+  photos: File[];
+  photoPreviews: string[];
 }

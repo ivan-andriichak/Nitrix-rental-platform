@@ -13,7 +13,10 @@ body {
     margin: 0;
     box-sizing: border-box;
     min-height: 100%;
-    background-color: #a49582;
+    background-image: url('images/PNG/apartment_background.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #e7e7e1;
     color: white;
 }
 

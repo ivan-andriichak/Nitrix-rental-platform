@@ -1,14 +1,12 @@
-import React, {FC, useCallback, useRef, useState} from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { UserInfo } from '../UserInfo';
 import css from './Header.module.css';
-// import imdb_logo from '../../images/PNG/imdb_logo.png';
 import menu_icon from '../../images/SVG/menu_icon.svg';
 import clear_icon from '../../images/SVG/clear_icon.svg';
 import search_icon from '../../images/SVG/search_icon.svg';
 import user_icon from '../../images/PNG/user_icon.png';
-// import {Genres} from "../Genres";
 
 
 const Header: FC = () => {
@@ -36,10 +34,6 @@ const Header: FC = () => {
     return (
       <div className={css.header_container}>
           <div className={css.header}>
-              {/*<NavLink to={'/'}>*/}
-              {/*    <img className={css.imdb_logo} src={imdb_logo} alt="imdb_logo"/>*/}
-              {/*</NavLink>*/}
-
               <div className={css.menu_block}>
                   <img
                     ref={menuIconRef}
@@ -66,7 +60,7 @@ const Header: FC = () => {
                   <div className={css.clear_button} onClick={handleClearSearchText}>
                       <img src={clear_icon} alt="clear_icon"/>
                   </div>
-                  <button className={css.search_button} role="button">
+                  <button className={css.search_button} >
                       <img className={css.search_icon} src={search_icon} alt="search_square"/>
                   </button>
               </div>

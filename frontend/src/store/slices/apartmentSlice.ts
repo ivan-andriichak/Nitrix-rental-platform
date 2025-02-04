@@ -22,28 +22,39 @@ const initialState: ApartmentState = {
   error: null,
 };
 
-// Fetch apartments
+// 📌 Отримання всіх квартир
 export const fetchApartments = createAsyncThunk('apartments/fetchAll', async () => {
   const response = await api.get('/apartments');
   return response.data;
 });
 
-// Add new apartment
-export const addApartment = createAsyncThunk('apartments/add', async (apartment: Partial<Apartment>) => {
-  const response = await api.post('/apartments', apartment);
-  return response.data;
-});
+// 📌 Додавання нової квартири
+export const addApartment = createAsyncThunk(
+  'apartments/add',
+  async (apartment: FormData) => {
+    const response = await api.post('/apartments', apartment, {
+      headers: { 'Content-Type': 'multipart/form-data' }, // Вказуємо, що передаємо файли
+    });
+    return response.data;
+  }
+);
 
-// Update apartment
-export const updateApartment = createAsyncThunk('apartments/update', async (apartment: Apartment) => {
-  const response = await api.put(`/apartments/${apartment.id}`, apartment);
-  return response.data;
-});
+// 📌 Оновлення квартири
+export const updateApartment = createAsyncThunk(
+  'apartments/update',
+  async ({ id, formData }: { id: string; formData: FormData }) => {
+    const response = await api.put(`/apartments/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  }
+);
 
-// Delete apartment
-export const deleteApartment = createAsyncThunk('apartments/delete', async (id: string) => {
-  await api.delete(`/apartments/${id}`);
-  return id;
+// 📌 Видалення квартири
+export const deleteApartment = createAsyncThunk('apartments', async (_id: string) => {
+  await api.delete(`/apartments/${_id}`);
+  console.log('Apartment deleted:', _id); // Логування для перевірки
+  return _id;
 });
 
 const apartmentSlice = createSlice({
@@ -62,8 +73,23 @@ const apartmentSlice = createSlice({
       .addCase(fetchApartments.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Error fetching apartments';
+      })
+      // ✅ Додавання квартири
+      .addCase(addApartment.fulfilled, (state, action) => {
+        state.apartments.push(action.payload);
+      })
+      // ✅ Оновлення квартири
+      .addCase(updateApartment.fulfilled, (state, action) => {
+        const index = state.apartments.findIndex((apt) => apt.id === action.payload.id);
+        if (index !== -1) {
+          state.apartments[index] = action.payload;
+        }
+      })
+      // ✅ Видалення квартири
+      .addCase(deleteApartment.fulfilled, (state, action) => {
+        console.log('Apartment deleted:', action.payload); // Логування для перевірки
+        state.apartments = state.apartments.filter((apt) => apt.id !== action.payload);
       });
-    // Add handlers for add, update, delete...
   },
 });
 
