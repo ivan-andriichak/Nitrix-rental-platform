@@ -13,6 +13,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "uploads/**/*"],
   "exclude": ["node_modules"]
 }

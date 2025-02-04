@@ -80,6 +80,7 @@ export default [
       'dist/',
       '.idea/',
       '.husky/',
+      'uploads/',
       'node_modules/',
       '.git/',
       '*.config.js',

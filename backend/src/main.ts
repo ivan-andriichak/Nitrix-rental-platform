@@ -1,12 +1,12 @@
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
-import fileUpload from 'express-fileupload';
 import rateLimit from 'express-rate-limit';
 import mongoose from 'mongoose';
+import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 
-import swaggerSpec from '../docs/swagger.json';
 import { configs } from './configs/configs';
+import swaggerSpec from './docs/swagger.json';
 import { ApiError } from './errors/api-errors';
 import { apartmentRouter } from './routes/apartment.routes';
 
@@ -25,17 +25,18 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(fileUpload());
-
 const limiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 50,
   message: {
     status: 429,
     message: 'Too Many Requests',
   },
 });
 app.use(limiter);
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+
+app.use(express.urlencoded({ extended: true })); // Декодує x-www-form-urlencoded
 
 app.use('/apartments', limiter, apartmentRouter);
 
