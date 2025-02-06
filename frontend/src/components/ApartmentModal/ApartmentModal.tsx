@@ -26,8 +26,8 @@ const ApartmentModal: React.FC<ApartmentModalProps> = ({ apartment, onClose, onS
     setFormData({
       title: apartment?.title || '',
       description: apartment?.description || '',
-      price: apartment?.price || 0,
-      rooms: apartment?.rooms || 0,
+      price: apartment?.price || 10,
+      rooms: apartment?.rooms || 1,
       photos: [],
       photoPreviews: apartment?.photos || [],
     });

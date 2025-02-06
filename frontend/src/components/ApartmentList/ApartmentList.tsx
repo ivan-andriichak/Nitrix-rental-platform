@@ -3,14 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addApartment, AppDispatch, deleteApartment, fetchApartments, RootState, updateApartment } from '../../store';
 import ApartmentModal from '../ApartmentModal/ApartmentModal';
 import css from './ApartmentList.module.css';
+import { Apartment } from '../../interfaces/types';
 
 const BASE_URL = 'http://localhost:5000'; // Бекенд працює локально
 
+
 const ApartmentList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const { apartments, loading, error } = useSelector((state: RootState) => state.apartment);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingApartment, setEditingApartment] = useState<any>(null);
+
+  const [editingApartment, setEditingApartment] = useState<Apartment | undefined>(undefined);
+
 
   useEffect(() => {
     dispatch(fetchApartments());
@@ -22,7 +28,7 @@ const ApartmentList: React.FC = () => {
   if (error) return <p className={css.errorMessage}>Error: {error}</p>;
 
   const handleAdd = () => {
-    setEditingApartment(null);
+    setEditingApartment(undefined);
     setIsModalOpen(true);
   };
 
@@ -67,9 +73,9 @@ const ApartmentList: React.FC = () => {
             {/* Додаємо зображення */}
             {apartment.photos && apartment.photos.length > 0 && (
               <div className={css.apartmentPhotos}>
-                {apartment.photos.map((photo: string, index: number) => (
+                {apartment.photos.map((photo: string) => (
                   <img
-                    key={index}
+                    key={photo}
                     src={`${BASE_URL}${photo}`} // Додаємо базову URL до шляху фото
                     alt={`photo: ${apartment.title}`}
                     className={css.apartmentImage}

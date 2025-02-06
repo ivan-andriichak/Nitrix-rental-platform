@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { ApartmentList } from '../components/ApartmentList';
+// import { ApartmentList } from '../components/ApartmentList';
 
 
 const ApartmentsPage: FC = () => {
   return (
     <div>
-      <ApartmentList />
+      {/*<ApartmentList />*/}
     </div>
   )
 };
