@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addApartment, AppDispatch, deleteApartment, fetchApartments, RootState, updateApartment } from '../../store';
 import ApartmentModal from '../ApartmentModal/ApartmentModal';
@@ -7,8 +7,11 @@ import { Apartment } from '../../interfaces/types';
 
 const BASE_URL = 'http://localhost:5000'; // Бекенд працює локально
 
+interface GenresProps {
+  onClose?: () => void;
+}
 
-const ApartmentList: React.FC = () => {
+const ApartmentList: FC<GenresProps> = ({onClose}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { apartments, loading, error } = useSelector((state: RootState) => state.apartment);
@@ -50,6 +53,7 @@ const ApartmentList: React.FC = () => {
     }
   };
 
+
   const handleSave = async (apartment: any) => {
     if (apartment.id) {
       await dispatch(updateApartment(apartment));
@@ -64,6 +68,9 @@ const ApartmentList: React.FC = () => {
       <button className={css.addApartmentButton} onClick={handleAdd}>
         Add Apartment
       </button>
+
+      <button className={css.closeButton} onClick={onClose}>Закрити</button>
+
       <ul className={css.apartmentList}>
         {apartments.map((apartment) => (
           <li key={apartment.id} className={css.apartmentListItem}>
@@ -75,14 +82,15 @@ const ApartmentList: React.FC = () => {
               <div className={css.apartmentPhotos}>
                 {apartment.photos.map((photo: string) => (
                   <img
-                    key={photo}
-                    src={`${BASE_URL}${photo}`} // Додаємо базову URL до шляху фото
+                    key={`${photo}`}
+                    src={`${BASE_URL}${photo}`}
                     alt={`photo: ${apartment.title}`}
                     className={css.apartmentImage}
                   />
                 ))}
               </div>
             )}
+
 
             <div className={css.buttonContainer}>
               <button className={css.editButton} onClick={() => handleEdit(apartment)}>

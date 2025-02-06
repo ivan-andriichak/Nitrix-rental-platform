@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
-import {useForm} from 'react-hook-form';
+import { FC } from 'react';
+import { useForm } from 'react-hook-form';
 
-import css from './UserInfo.module.css'
+import css from './UserInfo.module.css';
 
 interface UserInfoProps {
     onClose: () => void;

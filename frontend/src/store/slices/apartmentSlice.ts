@@ -25,7 +25,10 @@ const initialState: ApartmentState = {
 // 📌 Отримання всіх квартир
 export const fetchApartments = createAsyncThunk('apartments/fetchAll', async () => {
   const response = await api.get('/apartments');
-  return response.data;
+  return response.data.map((apt: any) => ({
+    ...apt,
+    id: apt._id, // додати поле id з _id
+  }));
 });
 
 // 📌 Додавання нової квартири
@@ -51,10 +54,9 @@ export const updateApartment = createAsyncThunk(
 );
 
 // 📌 Видалення квартири
-export const deleteApartment = createAsyncThunk('apartments', async (_id: string) => {
-  await api.delete(`/apartments/${_id}`);
-  console.log('Apartment deleted:', _id); // Логування для перевірки
-  return _id;
+export const deleteApartment = createAsyncThunk('apartments', async (id: string) => {
+  await api.delete(`/apartments/${id}`);
+  return id;
 });
 
 const apartmentSlice = createSlice({
@@ -74,17 +76,21 @@ const apartmentSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Error fetching apartments';
       })
+
       // ✅ Додавання квартири
-      .addCase(addApartment.fulfilled, (state, action) => {
+     .addCase(addApartment.fulfilled, (state, action) => {
         state.apartments.push(action.payload);
       })
+
       // ✅ Оновлення квартири
       .addCase(updateApartment.fulfilled, (state, action) => {
-        const index = state.apartments.findIndex((apt) => apt.id === action.payload.id);
+        const updatedApartment = action.payload;
+        const index = state.apartments.findIndex(apartment => apartment.id === updatedApartment.id);
         if (index !== -1) {
-          state.apartments[index] = action.payload;
+          state.apartments[index] = updatedApartment;
         }
       })
+
       // ✅ Видалення квартири
       .addCase(deleteApartment.fulfilled, (state, action) => {
         console.log('Apartment deleted:', action.payload); // Логування для перевірки

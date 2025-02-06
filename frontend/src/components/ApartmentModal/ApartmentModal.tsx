@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addApartment, AppDispatch, updateApartment } from '../../store';
 import styles from './ApartmentModal.module.css';
@@ -10,7 +10,7 @@ interface ApartmentModalProps {
   onSave?: (apartment: Apartment) => Promise<void>
 }
 
-const ApartmentModal: React.FC<ApartmentModalProps> = ({ apartment, onClose, onSave }) => {
+const ApartmentModal: FC<ApartmentModalProps> = ({ apartment, onClose, onSave }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [formData, setFormData] = useState<FormDataState>({

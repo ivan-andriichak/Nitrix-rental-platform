@@ -1,12 +1,11 @@
-
-import { ApartmentList } from '../components/ApartmentList';
+import { Home } from '../components/Home';
 
 const HomePage = () => {
   return (
     <div>
-      <ApartmentList/>
+      <Home />
     </div>
   );
 };
 
-export {HomePage};
+export { HomePage };

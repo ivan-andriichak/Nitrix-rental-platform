@@ -123,3 +123,10 @@
     border-radius: 50%;
 }
 
+.apartment_menu_block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: larger;
+}
+
