@@ -4,6 +4,7 @@ import { addApartment, AppDispatch, deleteApartment, fetchApartments, RootState,
 import ApartmentModal from '../ApartmentModal/ApartmentModal';
 import css from './ApartmentList.module.css';
 import { Apartment } from '../../interfaces/types';
+import clear_icon from '../../images/SVG/clear_icon.svg';
 
 const BASE_URL = 'http://localhost:5000'; // Бекенд працює локально
 
@@ -69,7 +70,9 @@ const ApartmentList: FC<GenresProps> = ({onClose}) => {
         Add Apartment
       </button>
 
-      <button className={css.closeButton} onClick={onClose}>Закрити</button>
+      <button className={css.closeButton} onClick={onClose}>
+        <img src={clear_icon} alt="clear_icon" />
+      </button>
 
       <ul className={css.apartmentList}>
         {apartments.map((apartment) => (
@@ -77,7 +80,6 @@ const ApartmentList: FC<GenresProps> = ({onClose}) => {
             <h3 className={css.apartmentTitle}>{apartment.title}</h3>
             <p className={css.apartmentDescription}>{apartment.description}</p>
 
-            {/* Додаємо зображення */}
             {apartment.photos && apartment.photos.length > 0 && (
               <div className={css.apartmentPhotos}>
                 {apartment.photos.map((photo: string) => (

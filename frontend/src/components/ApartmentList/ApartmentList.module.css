@@ -1,4 +1,5 @@
 .apartmentListContainer {
+    position: relative;
     max-height: 80vh;
     overflow-y: auto;
     padding: 20px;
@@ -24,6 +25,16 @@
 
 .addApartmentButton:hover {
     background-color: #58ad4b;
+}
+
+.closeButton {
+    width: 40px;
+    padding: 8px 6px 6px 6px;
+    cursor: pointer;
+    position: absolute;
+    top: -2px;
+    right: 1px;
+    z-index: 999;
 }
 
 .apartmentList {

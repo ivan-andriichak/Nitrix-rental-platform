@@ -13,6 +13,7 @@ import { ApartmentList } from '../ApartmentList';
 
 const Header: FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [animationActive, setAnimationActive] = useState<boolean>(true);
   const menuIconRef = useRef<HTMLImageElement>(null);
   const [searchText, setSearchText] = useState<string>('');
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
@@ -20,6 +21,16 @@ const Header: FC = () => {
   const handleMenuImageClick = useCallback(() => {
     setMenuOpen(prevState => !prevState);
   }, []);
+
+  const handleLogoClick = () => {
+    setMenuOpen(prev => !prev);
+    setAnimationActive(prev => !prev);
+  };
+
+  const handleMenuClose = () => {
+    setMenuOpen(false);
+    setAnimationActive(true);
+  };
 
   const handleSearchInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -71,18 +82,21 @@ const Header: FC = () => {
       </div>
       {isUserInfoOpen && <UserInfo onClose={toggleUserInfo} />}
 
-      <div className={css.apartments_logo_block}>
+      <button
+        className={`${css.apartments_logo_block} ${animationActive ? css.animated : ''}`}
+        onClick={handleLogoClick}
+      >
         <img
-          className={`${css.menu_icon} ${menuOpen ? css.active : ''}`}
+          className={`${css.menu_icon } ${menuOpen ? css.active : ''}`}
           src={apartment_logo}
           alt="apartment_logo"
           onClick={handleMenuImageClick}
         />
         <p>Знайди квартиру мрії</p>
-      </div>
-      {menuOpen && (
-        <ApartmentList onClose={() => setMenuOpen(false)} />
-      )}
+
+      </button>
+      {menuOpen && <ApartmentList onClose={handleMenuClose}  />}
+      )
     </div>
   );
 };

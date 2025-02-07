@@ -83,8 +83,8 @@ const ApartmentModal: FC<ApartmentModalProps> = ({ apartment, onClose, onSave })
 
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modal}>
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h2>{apartment ? 'Edit Apartment' : 'Add Apartment'}</h2>
         <form onSubmit={handleSubmit}>
           <input className={styles.input} name="title" value={formData.title} onChange={handleChange}
@@ -94,10 +94,10 @@ const ApartmentModal: FC<ApartmentModalProps> = ({ apartment, onClose, onSave })
           <input className={styles.input} name="price" type="number" value={formData.price} onChange={handleChange}
                  placeholder="Price" required />
           <select className={styles.input} name="rooms" value={formData.rooms} onChange={handleChange} required>
-            {[1, 2, 3, 4, 5].map(num => <option key={num} value={num}>{num} Room(s)</option>)}
+            {[1, 2, 3].map(num => <option key={num} value={num}>{num} Room(s)</option>)}
           </select>
 
-          <label htmlFor="photos">Upload Photos:</label>
+          <label htmlFor="photos">Завантажити фото:</label>
           <input type="file" name="photos" id="photos" multiple onChange={handlePhotoChange} />
 
           <div className={styles.photoPreviewsContainer}>
@@ -106,12 +106,12 @@ const ApartmentModal: FC<ApartmentModalProps> = ({ apartment, onClose, onSave })
             ))}
           </div>
           <div className={styles.buttonsContainer}>
-            <button type="button" onClick={onClose} className={styles.cancelButton} disabled={success}>Cancel</button>
+            <button type="button" onClick={onClose} className={styles.cancelButton} disabled={success}>Закрити</button>
             <button type="submit" className={styles.saveButton} disabled={success}>{
               apartment ? 'Update' : 'Add'
             }</button>
           </div>
-          {success && <p>Apartment {apartment ? 'updated' : 'added'} successfully!</p>}
+          {success && <p>Квартира {apartment ? 'updated' : 'added'} successfully!</p>}
         </form>
       </div>
     </div>
