@@ -1,4 +1,6 @@
 .apartmentListContainer {
+    max-height: 80vh;
+    overflow-y: auto;
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
@@ -63,7 +65,7 @@
 }
 
 .apartmentImage {
-    width: 150px; /* або інший розмір */
+    width: 150px;
     height: auto;
     border-radius: 5px;
     object-fit: cover;

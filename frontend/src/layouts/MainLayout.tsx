@@ -1,11 +1,8 @@
-import {Outlet} from "react-router-dom";
-
-import {HeaderPage, } from "../pages";
+import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
   return (
     <div>
-      <HeaderPage/>
       <Outlet/>
     </div>
   );
